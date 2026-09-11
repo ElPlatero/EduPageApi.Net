@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/EduPageApi.Net/EduPageApi.Net.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/EduPageApi.Net.Tests/EduPageApi.Net.Tests.csproj" />
+  </Folder>
+</Solution>
