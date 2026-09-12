@@ -4,13 +4,6 @@ namespace EduPageApi.Protocol;
 
 internal sealed class LoginProtocol(HttpClient http, Uri schoolOrigin)
 {
-    internal static HttpClient CreateSessionClient() => new(new HttpClientHandler
-    {
-        UseCookies = true,
-        CookieContainer = new System.Net.CookieContainer(),
-        AllowAutoRedirect = false
-    });
-
     // Production callers must use a session-specific CookieContainer and disable automatic redirects.
     // The caller owns HttpClient; no credentials or response objects are retained here.
     internal async Task<IReadOnlyList<ObservedChild>> ConnectAsync(
