@@ -7,6 +7,12 @@ vertical use case will read grades for a child through an authorized parent
 account. EduPage's web protocol will be documented from authorized, independently
 captured network traffic before client functionality is implemented.
 
+The first offline protocol components now decode RPC envelopes, identify children
+linked to a parent, and join grades with subjects and assessments from embedded
+page data. These internal components are covered by synthetic tests and have been
+checked against the local capture. Live authentication and the public fluent API
+are not yet implemented.
+
 ## Repository structure
 
 ```text
