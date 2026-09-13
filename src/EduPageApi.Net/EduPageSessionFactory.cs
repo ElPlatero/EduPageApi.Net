@@ -56,7 +56,7 @@ public sealed class EduPageConnection
         {
             var children = await new LoginProtocol(transport.Client, origin)
                 .ConnectAsync(username, password, cancellationToken).ConfigureAwait(false);
-            return new EduPageSession(transport, children.Select(child =>
+            return new EduPageSession(transport, origin, children.Select(child =>
                 new EduPageChild(child.Id, child.FirstName, child.LastName)).ToArray());
         }
         catch (ProtocolException error)
