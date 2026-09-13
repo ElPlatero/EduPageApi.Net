@@ -2,10 +2,36 @@
 
 An independent, fluent .NET client for consuming authorized EduPage data.
 
-The project is currently in its planning and protocol-discovery phase. Its first
-vertical use case will read grades for a child through an authorized parent
-account. EduPage's web protocol will be documented from authorized, independently
-captured network traffic before client functionality is implemented.
+The initial public API supports parent login and a snapshot of associated
+children. Public grade queries and additional authentication steps are not yet
+available.
+
+## Usage
+
+```csharp
+using EduPageApi;
+using Microsoft.Extensions.DependencyInjection;
+
+services.AddEduPageSessions();
+
+// Resolve or constructor-inject the singleton factory.
+var factory = serviceProvider.GetRequiredService<EduPageSessionFactory>();
+await using var session = await factory
+    .ForSchool("my-school")
+    .ConnectAsync(username, password, cancellationToken);
+
+var children = session.Children;
+```
+
+Each connection creates an independent session owned by the caller. Keep it for
+as long as needed and dispose it explicitly. Disposing a DI scope or the provider
+does not dispose sessions created by the factory. Registration does not use
+IHttpClientFactory or accept externally pooled HTTP clients. Credentials are not
+retained by the factory or returned session. Disposing a session releases local
+resources; it does not log out on the server. Expired sessions are not
+automatically reauthenticated.
+
+DI is optional: `new EduPageSessionFactory()` provides the same behavior.
 
 ## Repository structure
 
