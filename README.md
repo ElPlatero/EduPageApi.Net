@@ -2,9 +2,8 @@
 
 An independent, fluent .NET client for consuming authorized EduPage data.
 
-The initial public API supports parent login and a snapshot of associated
-children. Public grade queries and additional authentication steps are not yet
-available.
+The initial public API supports parent login, a snapshot of associated children,
+and grade queries. Additional authentication steps are not yet available.
 
 ## Usage
 
@@ -21,6 +20,11 @@ await using var session = await factory
     .ConnectAsync(username, password, cancellationToken);
 
 var children = session.Children;
+
+foreach (var child in children)
+{
+    var grades = await session.ForChild(child).Grades.GetAsync(cancellationToken);
+}
 ```
 
 Each connection creates an independent session owned by the caller. Keep it for
@@ -32,6 +36,12 @@ resources; it does not log out on the server. Expired sessions are not
 automatically reauthenticated.
 
 DI is optional: `new EduPageSessionFactory()` provides the same behavior.
+
+Grade queries accept children from the owning session's `Children` collection.
+Building a query does not contact the server; each `GetAsync` loads a fresh result.
+Child-dependent operations are serialized within a session. Grade text preserves
+inline comments and timestamps do not assume a UTC offset. The grades flow has
+offline tests; live multi-child behavior remains unverified.
 
 ## Repository structure
 
